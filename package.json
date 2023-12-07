@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/mottyN/filter#readme",
   "dependencies": {
-    "expres": "^0.0.5"
+    "bili": "^5.0.5",
+    "expres": "^0.0.5",
+    "http-proxy": "^1.18.1"
   }
 }
