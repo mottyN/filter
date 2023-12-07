@@ -1,30 +1,31 @@
-const express = require('express');
 const http = require('http');
-const net = require('net');
 const url = require('url');
+const net = require('net');
 
-const app = express();
-
-app.use((req, res) => {
+// יצירת שרת HTTP
+const httpServer = http.createServer((req, res) => {
   const { method, headers, url: reqUrl } = req;
   const { port, hostname } = url.parse(reqUrl);
 
+  // בדיקה אם הבקשה היא CONNECT
   if (method === 'CONNECT') {
     handleConnect(req, res, { port, hostname });
   } else {
+    // פעולה אחרת - העברת הבקשה לשרת המקור
     handleHttp(req, res);
   }
 });
 
-const server = http.createServer(app);
-
+// האזנה לפורט 8080 (אתה יכול לשנות את הפורט כרצונך)
 const PORT = process.env.PROT || 4000;;
-server.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Proxy server listening on port ${PORT}`);
 });
 
+// פונקציה להעברת בקשות CONNECT לשרת המקור
 function handleConnect(req, res, { port, hostname }) {
   const serverSocket = net.connect(port, hostname, () => {
+    // יצירת חיבור בין הקליינט ובין שרת המקור
     res.write('HTTP/1.1 200 Connection Established\r\n\r\n');
     serverSocket.pipe(res);
     res.pipe(serverSocket);
@@ -37,6 +38,7 @@ function handleConnect(req, res, { port, hostname }) {
   });
 }
 
+// פונקציה להעברת בקשות HTTP לשרת המקור
 function handleHttp(req, res) {
   const { method, headers, url: reqUrl } = req;
   const { port, hostname } = url.parse(reqUrl);
