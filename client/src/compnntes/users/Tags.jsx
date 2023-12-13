@@ -8,6 +8,9 @@ import Switch from '@mui/material/Switch';
 import WifiIcon from '@mui/icons-material/Wifi';
 import BluetoothIcon from '@mui/icons-material/Bluetooth';
 import { Box } from '@mui/material';
+import Button from '@mui/material/Button';
+import { Key } from '@mui/icons-material';
+
 
 var categories = [
     'חדשות ומידע',
@@ -24,8 +27,8 @@ var categories = [
     'אומנות ומוזיקה'
 ];
 
-export default function Tags() {
-  const [checked, setChecked] = React.useState(['wifi']);
+export default function Tags(props) {
+  const [checked, setChecked] = React.useState([props.tagsClosed]);
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -38,21 +41,27 @@ export default function Tags() {
     }
 
     setChecked(newChecked);
+    props.setTagsClosed(newChecked)
+    console.log(newChecked);
   };
-
+  React.useEffect(() => {
+    setChecked(props.tagsClosed)
+  }, props.tagsClosed)
   return (
     <Box sx={{width:'100vh', marginX: 'auto', display: 'flex', justifyContent: 'center'}}>
     <List
       sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-      subheader={<ListSubheader>Settings</ListSubheader>}
+      subheader={<ListSubheader>רשימת תגיות</ListSubheader>}
     >
      
       {categories.map((c) => {
-        return <> 
+        return <div key={c}> 
         <ListItem>
         <ListItemIcon>
           <BluetoothIcon />
         </ListItemIcon>
+        <Button variant="outlined">הצג </Button>
+
         <ListItemText id={c} primary={c} />
         <Switch
           edge="end"
@@ -63,7 +72,7 @@ export default function Tags() {
           }}
         />
       </ListItem>
-      </>
+      </div>
       })}
     </List>
     </Box>
