@@ -19,6 +19,7 @@
   "homepage": "https://github.com/mottyN/filter#readme",
   "dependencies": {
     "bili": "^5.0.5",
+    "dotenv": "^16.3.1",
     "expres": "^0.0.5",
     "http-parser-js": "^0.5.8",
     "http-proxy": "^1.18.1",

@@ -29,7 +29,7 @@ var categories = [
 
 export default function Tags(props) {
   const [checked, setChecked] = React.useState([props.tagsClosed]);
-
+// console.log(props.tagsClosed);
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -46,7 +46,7 @@ export default function Tags(props) {
   };
   React.useEffect(() => {
     setChecked(props.tagsClosed)
-  }, props.tagsClosed)
+  }, [props.tagsClosed])
   return (
     <Box sx={{width:'100vh', marginX: 'auto', display: 'flex', justifyContent: 'center'}}>
     <List

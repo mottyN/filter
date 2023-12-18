@@ -1,9 +1,12 @@
 const express = require("express");
+
 const path = require("path");
 const cors = require("cors");
 const { checkDBConnection } = require("./db/db");
 const login = require('./router/login')
 const usersRouter = require('./router/userRouter')
+const sitesRouter = require('./router/sitesRouter')
+
 
 const PORT = process.env.PROT || 4000;
 
@@ -13,6 +16,8 @@ app.use(express.json());
 
 app.use("/api/login", login);
 app.use("/api/users", usersRouter);
+app.use("/api/sites", sitesRouter);
+
 
 
 
@@ -33,3 +38,4 @@ const run = async() => {
     }
 }
 run()
+// console.log(process.env);
