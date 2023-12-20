@@ -24,7 +24,13 @@ const pages = [
 export default function SwitchListSecondary(props) {
   const [checked, setChecked] = React.useState(["wifi"]);
   const [name, setName] = React.useState("");
-  const [list, setList] = React.useState([]);
+  const [url, setUrl] = React.useState("");
+
+  const [list, setList] = React.useState(props.sites);
+
+  React.useEffect(()=>{
+    setList(props.sites)
+  },[props.sites])
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -44,9 +50,10 @@ export default function SwitchListSecondary(props) {
     if (name === "") {
       return;
     }
-    let arr = [...list, name];
-    setList(arr);
+    props.addSite(url, name)
     setName("");
+    setName('');
+    setUrl('');
   };
 
   const hndeldelete = (p) => {
@@ -77,10 +84,18 @@ export default function SwitchListSecondary(props) {
               {/* <TextField id="standard-basic" label="הוסף אתר" variant="standard" /> */}
               <TextField
                 id="outlined-controlled"
-                label="Controlled"
+                label="שם אתר"
                 value={name}
                 onChange={(event) => {
                   setName(event.target.value);
+                }}
+              />
+                <TextField
+                id="outlined"
+                label=" כתובת האתר"
+                value={url}
+                onChange={(event) => {
+                  setUrl(event.target.value);
                 }}
               />
               <Button variant="outlined" onClick={hndelAdd}>
@@ -94,7 +109,7 @@ export default function SwitchListSecondary(props) {
                 <ListItemIcon>
                   <WebIcon />
                 </ListItemIcon>
-                <ListItemText id="switch-list-label-wifi" primary={p} />
+                <ListItemText id="switch-list-label-wifi" primary={p.url} />
                 <Switch
                   edge="end"
                   onChange={handleToggle(p)}

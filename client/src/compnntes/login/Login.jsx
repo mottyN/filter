@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useParams } from "react-router-dom";
 import './Login.css';
 import { Connection } from './connection';
 
@@ -10,6 +10,7 @@ function Login(){
     const [data, setData] = useState('')
     const [con, setCon] = useState(false)
     const [showPassword, setShowPassword] = useState(false);
+    const { id } = useParams();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -48,7 +49,7 @@ function Login(){
         setData(data)
         if (response.ok) {
           // setCon(true)
-          window.location.href = "/users";
+          window.location.href = `/users/${id}`;
           alert("הצלחה")
         } else {
           console.log(data.massenge);

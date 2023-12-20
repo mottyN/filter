@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { AccessAlarm, Person } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const pages = ['הגדרות סינון אישיות ', 'תגיות', 'הצעות לתיוג'];
 const settings = [ 'חשבון',  'יציאה'];
@@ -20,6 +21,7 @@ const settings = [ 'חשבון',  'יציאה'];
 function ResponsiveAppBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState('');
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -44,6 +46,13 @@ function ResponsiveAppBar(props) {
     setAnchorElNav(props.setPage( pages.indexOf(p)));
     
   };
+  const hndelLink = (i) => {
+    if(i === 'יציאה'){
+      navigate('/login')
+      
+    }
+    console.log(i);
+  }
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -156,7 +165,7 @@ function ResponsiveAppBar(props) {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography textAlign="center" onClick={() => hndelLink(setting)}>{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>

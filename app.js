@@ -6,6 +6,8 @@ const { checkDBConnection } = require("./db/db");
 const login = require('./router/login')
 const usersRouter = require('./router/userRouter')
 const sitesRouter = require('./router/sitesRouter')
+const sitesUser = require('./router/siteUser')
+
 
 
 const PORT = process.env.PROT || 4000;
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use("/api/login", login);
 app.use("/api/users", usersRouter);
 app.use("/api/sites", sitesRouter);
+app.use("/api/sitesUser", sitesUser);
+
 
 
 
