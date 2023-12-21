@@ -3,6 +3,7 @@ const {
   getSiteUser,
   addSiteUser,
   updateSiteUser,
+  deleteSiteUser,
 } = require("../db/dbSiteUser");
 const { getUser } = require("../db/db");
 const { updateSites } = require("../db/dbSites");
@@ -56,6 +57,20 @@ router.put("/:id", async (req, res) => {
     }
   } catch (e) {
     res.status(500).send(e);
+  }
+});
+
+
+router.delete("/:id", async (req, res) => {
+  try {
+      const deleted = await deleteSiteUser(req.params.id);
+      if (deleted) {
+          res.status(204).send("DSGDFYH");
+      } else {
+          res.status(404).send("user not found in DB");
+      }
+  } catch (error) {
+      res.status(500).send("server failed to connect with DB");
   }
 });
 module.exports = router;

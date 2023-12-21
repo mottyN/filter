@@ -45,5 +45,13 @@ async function updateSiteUser(id, status) {
   if (affectedRows) return getSiteUserBYid(id);
 
 }
+async function deleteSiteUser(id){
+  const sql = `
+  DELETE FROM users_sites
+          WHERE id = ?
+  `;
+  const [{ affectedRows }] = await pool.query(sql, [id]);
+    return affectedRows;
+}
 
-module.exports = { getSiteUser, getSiteUserBYid, addSiteUser, updateSiteUser };
+module.exports = { getSiteUser, getSiteUserBYid, addSiteUser, updateSiteUser , deleteSiteUser};

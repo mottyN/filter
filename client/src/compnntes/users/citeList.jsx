@@ -57,11 +57,13 @@ export default function SwitchListSecondary(props) {
   };
 
   const hndeldelete = (p) => {
-    let arr = [...list];
-    arr = arr.filter(function (item) {
-      return item !== p;
-    });
-    setList(arr);
+    // console.log(p);
+    props.deleteSite(p.users_sites_id)
+    // let arr = [...list];
+    // arr = arr.filter(function (item) {
+    //   return item !== p;
+    // });
+    // setList(arr);
   };
   return (
     <div>
@@ -89,6 +91,8 @@ export default function SwitchListSecondary(props) {
                 onChange={(event) => {
                   setName(event.target.value);
                 }}
+                variant="standard"
+                sx={{margin: '50px'}}
               />
                 <TextField
                 id="outlined"
@@ -97,8 +101,9 @@ export default function SwitchListSecondary(props) {
                 onChange={(event) => {
                   setUrl(event.target.value);
                 }}
+                variant="standard"
               />
-              <Button variant="outlined" onClick={hndelAdd}>
+              <Button  variant="text" onClick={hndelAdd}>
                 הוסף
               </Button>
             </Stack>
@@ -106,10 +111,11 @@ export default function SwitchListSecondary(props) {
           {list.map((p) => {
             return (
               <ListItem>
-                <ListItemIcon>
+                {/* <ListItemIcon>
                   <WebIcon />
-                </ListItemIcon>
-                <ListItemText id="switch-list-label-wifi" primary={p.url} />
+                </ListItemIcon> */}
+                <ListItemText id="switch-list-label-wifi" primary={p.url}  sx={{maxWidth : "60%",overflow: 'auto'}}/>
+                <ListItemText id="switch-list-label-wifi" primary={p.name} />
                 <Switch
                   edge="end"
                   onChange={handleToggle(p)}

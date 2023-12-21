@@ -6,10 +6,11 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import Switch from '@mui/material/Switch';
 import WifiIcon from '@mui/icons-material/Wifi';
-import BluetoothIcon from '@mui/icons-material/Bluetooth';
+import WebIcon from '@mui/icons-material/Web';
 import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import { Key } from '@mui/icons-material';
+import { useParams } from 'react-router-dom';
 
 
 var categories = [
@@ -29,24 +30,48 @@ var categories = [
 
 export default function Tags(props) {
   const [checked, setChecked] = React.useState([props.tagsClosed]);
+  const [tags, setTags] = React.useState(props.tags);
+
+  const  {id}  = useParams();
+
+
 // console.log(props.tagsClosed);
   const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
+    const currentIndex = checked.indexOf(value.name);
     const newChecked = [...checked];
-
+    console.log(value);
     if (currentIndex === -1) {
       newChecked.push(value);
+      props.tagoeoe(value.id, true)
+
     } else {
       newChecked.splice(currentIndex, 1);
+      props.tagoeoe(value.id, false)
+
     }
 
     setChecked(newChecked);
     props.setTagsClosed(newChecked)
+    // try{
+    //   const data = fetch(`http://localhost:4000/api/tagsUser/${id}`,
+      
+    //    {
+    //     method: "post",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ tagId : value.id}),
+    //   })
+    // }
+    // catch(e){
+    //   console.log(e);
+    // }
     console.log(newChecked);
   };
   React.useEffect(() => {
     setChecked(props.tagsClosed)
-  }, [props.tagsClosed])
+    setTags(props.tags)
+  }, [props.tagsClosed, props.tags])
   return (
     <Box sx={{width:'100vh', marginX: 'auto', display: 'flex', justifyContent: 'center'}}>
     <List
@@ -54,19 +79,19 @@ export default function Tags(props) {
       subheader={<ListSubheader>רשימת תגיות</ListSubheader>}
     >
      
-      {categories.map((c) => {
-        return <div key={c}> 
+      {tags&& tags.map((c) => {
+        return <div key={c.id}> 
         <ListItem>
         <ListItemIcon>
-          <BluetoothIcon />
+          <WebIcon />
         </ListItemIcon>
         <Button variant="outlined">הצג </Button>
 
-        <ListItemText id={c} primary={c} />
+        <ListItemText id={c.id} primary={c.name} />
         <Switch
           edge="end"
           onChange={handleToggle(c)}
-          checked={checked.indexOf(c) !== -1}
+          checked={checked.indexOf(c.name) !== -1}
           inputProps={{
             'aria-labelledby': 'switch-list-label-bluetooth',
           }}

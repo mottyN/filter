@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import SiteAdmin from "./siteAdmin";
 import { useEffect, useState } from "react";
+import { Panel } from "./panel";
 
 export function Admin() {
   const [sites, setSites] = useState([]);
@@ -61,11 +62,12 @@ export function Admin() {
   }
   return (
     <div>
+      {/* <Panel /> */}
       <h1>מערכת ניהול סינון אתרים</h1>
       <div style={{ margin: "10px" }}>
         <Link to={"adminUsers"}>
           {" "}
-          <button>לקוחות</button>
+          {/* <button>לקוחות</button> */}
         </Link>
       </div>
       <div
