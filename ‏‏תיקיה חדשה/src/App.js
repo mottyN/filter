@@ -6,10 +6,11 @@ import { AdminUsers } from "./compnntes/admin/adminUsers";
 import SignUp from "./compnntes/login/signUp";
 import Login from "./compnntes/login/Login";
 import { Adiminm } from "./compnntes/admin/adminm";
+
 function App() {
   return (
     <div className="App">
-       <BrowserRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="login" element={<Login />} />
           <Route path="signUp" element={<SignUp />} />
@@ -20,7 +21,6 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
-     
   );
 }
 
