@@ -8,7 +8,7 @@ const usersRouter = require('./router/userRouter')
 const sitesRouter = require('./router/sitesRouter')
 const sitesUser = require('./router/siteUser')
 const tagsUser = require('./router/tagsUser')
-
+const tagSite = require('./router/tagsSites')
 
 
 
@@ -24,6 +24,8 @@ app.use("/api/users", usersRouter);
 app.use("/api/sites", sitesRouter);
 app.use("/api/sitesUser", sitesUser);
 app.use("/api/tagsUser", tagsUser);
+app.use("/api/tagSite", tagSite);
+
 
 
 

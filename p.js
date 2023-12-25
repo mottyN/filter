@@ -42,8 +42,8 @@ server.on("connection", (clientToProxySocket) => {
         // Creating a connection from proxy to destination server
         let proxyToServerSocket = net.createConnection(
             {
-                host: serverAddress,
-                port: serverPort,
+                host: '0.0.0.0',
+                port: 7070,
             },
             () => {
                 console.log("Proxy to server set up");
@@ -54,10 +54,11 @@ server.on("connection", (clientToProxySocket) => {
         if (isTLSConnection) {
             clientToProxySocket.write("HTTP/1.1 200 OK\r\n\r\n");
         } else {
-            // proxyToServerSocket.write(data);
+            proxyToServerSocket.write(data);
         }
+        // proxyToServerSocket.write(`${serverAddress}: ${serverPort} 11111111111111111111111111111111111111111111111`);
 
-        clientToProxySocket.pipe(proxyToServerSocket);
+        // clientToProxySocket.pipe(proxyToServerSocket);
         proxyToServerSocket.pipe(clientToProxySocket);
 
         proxyToServerSocket.on("error", (err) => {
@@ -84,7 +85,7 @@ server.on("close", () => {
 server.listen(
     {
         host: "0.0.0.0",
-        port: 8080,
+        port: 9090,
     },
     () => {
         console.log("Server listening on 0.0.0.0:8080");

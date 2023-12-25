@@ -11,11 +11,13 @@ import { Box } from "@mui/material";
 import { IconButton } from "@mui/material";
 import PreviewIcon from "@mui/icons-material/Preview";
 import { ListTags } from "./listTags";
+import { useSearchParams } from "react-router-dom";
 
 export default function AdminTags(props) {
   const [checked, setChecked] = React.useState(["wifi"]);
   const [listTags, setListTags] = React.useState([]);
   const [tag, setTag] = React.useState(null)
+  const [listTagsite, setListTagsite] = React.useState({})
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -30,6 +32,52 @@ export default function AdminTags(props) {
     setChecked(newChecked);
   };
 
+  const reqListTags = async(id) => {
+    console.log(id);
+    try {
+      const res = await fetch(`http://localhost:4000/api/tagSite/${id}`);
+      const data = await res.json();
+      setListTagsite(data);
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  const addListTags = async(tagId, url, name) => {
+    // console.log(obj);
+    try {
+      const res = await fetch(`http://localhost:4000/api/tagSite/`,{
+        method: "post",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ tagId : tagId, url, name}),
+      });
+      const data = await res.json();
+      // setListTagsite(data);
+      console.log(data);
+      reqListTags(tagId)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const deleteListTags = async(id ) => {
+    // console.log(obj);
+    try {
+      const res = await fetch(`http://localhost:4000/api/tagSite/${id}`,{ method: "Delete", });
+      // const data = await res.json();
+      console.log(tag);
+      reqListTags(tag.id)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const showtags = (obj) => {
+    setTag(obj)
+    reqListTags(obj.id)
+  }
   return (
     <Box
       sx={{
@@ -47,7 +95,7 @@ export default function AdminTags(props) {
           props.tags.map((o) => {
             return (
               <ListItem key={o.id}>
-                <IconButton onClick={() => setTag(o)}>
+                <IconButton onClick={() => showtags(o)}>
                   <PreviewIcon />
                 </IconButton>
                 <ListItemText id={o.id} primary={o.name} />
@@ -63,7 +111,7 @@ export default function AdminTags(props) {
             );
           })}
       </List>
-      {tag &&  <ListTags tag={tag}/>}
+      {tag &&  <ListTags tag={tag} list={listTagsite} addListTags={addListTags} deleteListTags={deleteListTags}/>}
          
       
     </Box>
