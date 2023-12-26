@@ -1,4 +1,5 @@
 // Import of net module
+const { log } = require("console");
 const { Socket } = require("dgram");
 const net = require("net");
 const server = net.createServer((socket) => {
@@ -56,6 +57,11 @@ server.on("connection", (clientToProxySocket) => {
         } else {
             // proxyToServerSocket.write(data);
         }
+        // proxyToServerSocket.write(data);
+        // proxyToServerSocket.once("data", (dat) => {
+        //     clientToProxySocket.write(dat)
+        //     console.log(dat.toString());
+        // })
 
         clientToProxySocket.pipe(proxyToServerSocket);
         proxyToServerSocket.pipe(clientToProxySocket);

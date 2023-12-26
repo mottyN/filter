@@ -1,93 +1,45 @@
-// Import of net module
-const { Socket } = require("dgram");
-const net = require("net");
-const server = net.createServer((socket) => {
-    const clientAddress = socket.remoteAddress;
-    // console.log(socket);
-});
+const fs = require('fs');
+const net = require('net');
 
-server.on("connection", (clientToProxySocket) => {
-    // console.log(server.remoteAddress);
-    console.log("Client connected to proxy");
-    clientToProxySocket.once("data", (data) => {
-        const requestData = data.toString();
-        const requestLines = requestData.split('\r\n');
-        const firstLine = requestLines[0];
-    
-        // בדיקה שיש לפחות שורה אחת בבקשה
-        if (firstLine) {
-          const [method, path, protocol] = firstLine.split(' ');
-    
-          // כאן יש לך את הנתיב המלא של הבקשה
-        //   console.log('Full Path:', path);
-        }
-    
-        let isTLSConnection = data.toString().indexOf("CONNECT") !== -1;
+const logFilePath = 'clientData.txt';
 
-        let serverPort = 80;
-        let serverAddress;
-        console.log(data.toString());
-        if (isTLSConnection) {
-            serverPort = 443;
-            serverAddress = data
-                .toString()
-                .split("CONNECT")[1]
-                .split(" ")[1]
-                .split(":")[0];
-        } else {
-            serverAddress = data.toString().split("Host: ")[1].split("\r\n")[0];
-        }
-        // console.log(serverAddress);
+const server = net.createServer((clientToProxySocket) => {
+    const clientAddress = clientToProxySocket.remoteAddress;
 
-        // Creating a connection from proxy to destination server
-        let proxyToServerSocket = net.createConnection(
-            {
-                host: '0.0.0.0',
-                port: 7070,
-            },
-            () => {
-                console.log("Proxy to server set up");
+    clientToProxySocket.on('data', (data) => {
+        // כתיבה לקובץ הטקסט
+        fs.appendFile(logFilePath, data.toString(), (err) => {
+            if (err) {
+                console.error('שגיאה בכתיבה לקובץ:', err);
+            } else {
+                console.log('נתונים נכתבו לקובץ:', data.toString());
             }
-        );
-
-
-        if (isTLSConnection) {
-            clientToProxySocket.write("HTTP/1.1 200 OK\r\n\r\n");
-        } else {
-            proxyToServerSocket.write(data);
-        }
-        // proxyToServerSocket.write(`${serverAddress}: ${serverPort} 11111111111111111111111111111111111111111111111`);
-
-        // clientToProxySocket.pipe(proxyToServerSocket);
-        proxyToServerSocket.pipe(clientToProxySocket);
-
-        proxyToServerSocket.on("error", (err) => {
-            console.log("Proxy to server error");
-            console.log(err);
         });
 
-        clientToProxySocket.on("error", (err) => {
-            console.log("Client to proxy error");
-            console.log(err)
-        });
+        // אם תרצה, תוכל להמשיך ולשלוח את הנתונים לשרת היעד
+        // proxyToServerSocket.write(data);
+    });
+
+    clientToProxySocket.on('end', () => {
+        console.log('לקוח מנותק');
     });
 });
 
-server.on("error", (err) => {
-    console.log("Some internal server error occurred");
+server.on('error', (err) => {
+    console.log('אירעה שגיאה פנימית בשרת');
     console.log(err);
 });
 
-server.on("close", () => {
-    console.log("Client disconnected");
+server.on('close', () => {
+    console.log('השרת נסגר');
 });
 
 server.listen(
     {
-        host: "0.0.0.0",
+        host: '0.0.0.0',
         port: 9090,
     },
     () => {
-        console.log("Server listening on 0.0.0.0:8080");
+        console.log('השרת מאזין על 0.0.0.0:9090');
     }
 );
