@@ -29,6 +29,16 @@ const { pool, getUser } = require("./db");
     const [res] = await pool.query(sql, [userId]);
     return res;
   }
+  async function getTagsUserByTagID(tagId,userId){
+    const sql = `
+    SELECT users_tags.id AS  users_tags_id, users_tags.status AS status_tags_users,  tags.name, tags.status
+    FROM users_tags
+    INNER JOIN tags ON users_tags.tag_id = tags.id 
+    WHERE users_tags.tag_id = ? AND users_tags.user_id = ?
+    `
+    const [res] = await pool.query(sql, [tagId,userId]);
+    return res;
+  }
   async function getTagsUserByID(id){
     const sql = `
     SELECT users_tags.id AS users_tags_id, users_tags.status AS status_tags_users, tags.name, tags.status
@@ -72,5 +82,5 @@ const { pool, getUser } = require("./db");
   }
 
 
-  module.exports = {getAllTass, getTagsUser, getTagsUserByID, addTagsUser, updateTagUser, deleteTagUser}
+  module.exports = {getAllTass, getTagsUser, getTagsUserByID, addTagsUser, updateTagUser, deleteTagUser, getTagsUserByTagID}
 

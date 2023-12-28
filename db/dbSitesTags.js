@@ -13,6 +13,16 @@ async function getTagsSites(tagID){
     const [res] = await pool.query(sql, [tagID]);
   return res;
 }
+async function getTagsSitesBySiteId(siteID){
+  const sql =`
+  SELECT sites_tags.id AS  sites_tags, sites_tags.tags_id , sites.url, sites.name, sites.status AS status 
+  FROM sites_tags
+  INNER JOIN sites ON sites_tags.sites_id = sites.id
+  WHERE sites_id = ?;
+  `
+  const [res] = await pool.query(sql, [siteID]);
+return res;
+}
 async function getTagsSitesById(id){
     const sql =`
     SELECT sites_tags.id AS  users_sites_id , sites.url, sites.name, sites.status AS status 
@@ -50,4 +60,4 @@ async function deleteTagsSite(id){
     return affectedRows;
 }
 
-module.exports = {getTagsSites, getTagsSitesById, addTagSite, deleteTagsSite}
+module.exports = {getTagsSites, getTagsSitesById, addTagSite, deleteTagsSite, getTagsSitesBySiteId}
