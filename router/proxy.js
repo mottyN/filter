@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs");
 const { getUser, getUsers } = require("../db/db");
 const { getSite, getSites } = require("../db/dbSites");
 const { getSiteUser } = require("../db/dbSiteUser");
@@ -18,35 +19,61 @@ router.post("/", async (req, res) => {
       // console.log(req.body);
 
       const users = await getUsers();
-      console.log(users);
+      // console.log(users);
       const user = findUser(name, password, users);
+      const { url } = req.body;
       if (user) {
-        const { url } = req.body;
         const sites = await getSites();
-
-        const site = sites.find((obj) => {
-          // console.log(obj.url);
-          console.log(obj.url.includes(url) );
-
-          return obj.url.includes(url);
-        });
-        console.log(site);
+        let site = false;
+        for (var i = 0; i < sites.length; i++) {
+          if (sites[i]?.url.includes(url)) {
+            // console.log("Found:", sites[i]);
+            site = sites[i] ;
+            break;
+          }
+        }
+        // console.log(url +"dewsrdgfrtgd");
+        // fs.appendFile("logs.txt", sites[i]+" :"+ url);
+    
+        // console.log(site);
         if (!site) {
+         
           res.status(200).end("true");
           //   console.log('fvdsf');
           return;
         }
-        console.log(site);
+        fs.appendFile(
+          "logs.txt",
+          `${sites[i]?.url}: ${url} : ${sites[i]?.url.includes(url)} ${
+            site?.status == 1
+          }\n`,
+          (err) => {
+            if (err) {
+              console.error(err);
+            }
+          }
+        );
+        // console.log("ffffffffffffffffffffffffffffffffff");
+
+        // console.log(site);
         if (site.status === 0) {
           res.status(200).end("false");
           return;
         }
 
         const sitesUser = await getSiteUser(user.id);
-        const siteUser = sitesUser.find((obj) => {
-          return obj.url === `https://${url}`;
-        });
+        let siteUser;
+        for (var i = 0; i < sitesUser.length; i++) {
+          if (sitesUser[i].url.includes(url)) {
+            console.log("Found:", sitesUser[i]);
+            siteUser = sitesUser[i];
+            break;
+          }
+        }
 
+        // const siteUser = sitesUser.find((obj) => {
+        //   return obj.url === `https://${url}`;
+        // });
         if (siteUser?.status === 0) {
           res.status(200).end("false");
           return;
@@ -58,8 +85,8 @@ router.post("/", async (req, res) => {
           let fleg = false;
 
           for (i in tags) {
-              const tagUser = await getTagsUserByTagID(tags[i].tags_id, user.id);
-              console.log(tagUser);
+            const tagUser = await getTagsUserByTagID(tags[i].tags_id, user.id);
+            console.log(tagUser);
             if (tagUser.length > 0) {
               fleg = true;
               console.log("eryhe");
@@ -70,7 +97,8 @@ router.post("/", async (req, res) => {
         }
         res.status(200).end("true");
         return;
-      } else {
+      }
+       else {
         res.status(404).send("not fuond");
       }
     } else {

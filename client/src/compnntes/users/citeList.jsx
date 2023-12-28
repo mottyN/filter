@@ -79,7 +79,7 @@ export default function SwitchListSecondary(props) {
       >
         <List
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" ,}}
-          subheader={<ListSubheader>רשימת אתרים אישית</ListSubheader>}
+          subheader={<ListSubheader>רשימת אתרים אישית</ListSubheader>} key={1}
         >
           <ListItem>
             <Stack direction="row" spacing={1}>
@@ -110,7 +110,8 @@ export default function SwitchListSecondary(props) {
           </ListItem>
           {list.map((p) => {
             return (
-              <ListItem>
+              <div key={p.users_tags_id}>
+              <ListItem >
                 {/* <ListItemIcon>
                   <WebIcon />
                 </ListItemIcon> */}
@@ -128,6 +129,7 @@ export default function SwitchListSecondary(props) {
                   <DeleteIcon />
                 </IconButton>
               </ListItem>
+              </div>
             );
           })}
         </List>

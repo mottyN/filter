@@ -120,7 +120,7 @@ export function Users () {
             <ResponsiveAppBar setPage={setPage}/>
             {page === 0 && <SwitchListSecondary sites={sites} addSite={addSite} deleteSite={deleteSite} tagsClosed={tagsClosed}/>}
             {page === 1 && <> <p>תיוגים </p> <Tags setTagsClosed={setTagsClosed} tagsClosed={tagsClosed} tags={tags} tagoeoe={tagoeoe}/></>}
-            {page === 2 && <> <p>הצעות לתיוג</p> <AddTags /></>}
+            {page === 2 && <> <p>הצעות לתיוג</p> <AddTags tags={tags}/></>}
 
             {/* <SwitchListSecondary /> */}
         </div>

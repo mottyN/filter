@@ -12,12 +12,15 @@ import { IconButton } from "@mui/material";
 import PreviewIcon from "@mui/icons-material/Preview";
 import { ListTags } from "./listTags";
 import { useSearchParams } from "react-router-dom";
+import { TagsOk } from "./tagsOk";
 
 export default function AdminTags(props) {
   const [checked, setChecked] = React.useState(["wifi"]);
   const [listTags, setListTags] = React.useState([]);
   const [tag, setTag] = React.useState(null)
   const [listTagsite, setListTagsite] = React.useState({})
+  const [listTagsiteok, setListTagsiteok] = React.useState({})
+
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -37,8 +40,21 @@ export default function AdminTags(props) {
     try {
       const res = await fetch(`http://localhost:4000/api/tagSite/${id}`);
       const data = await res.json();
-      setListTagsite(data);
-      console.log(data);
+      let arr = []
+      let arrOk = []
+
+      data.forEach((o) => {
+        if(o.statusOk === 1){
+          arr.push(o)
+        }
+        else{
+          arrOk.push(o)
+        }
+      })
+      setListTagsite(arr);
+      setListTagsiteok(arrOk);
+
+      // console.log(data);
     } catch (e) {
       console.log(e);
     }
@@ -56,12 +72,30 @@ export default function AdminTags(props) {
       const data = await res.json();
       // setListTagsite(data);
       console.log(data);
+      
       reqListTags(tagId)
     } catch (e) {
       console.log(e);
     }
   }
 
+  const putListTags = async(id ) => {
+    // console.log(obj);
+    try {
+      const res = await fetch(`http://localhost:4000/api/tagSite/`,{
+        method: "put",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id : id, status: 1}),
+      });
+      // const data = await res.json();
+      console.log(tag);
+      reqListTags(tag.id)
+    } catch (e) {
+      console.log(e);
+    }
+  }
   const deleteListTags = async(id ) => {
     // console.log(obj);
     try {
@@ -112,6 +146,8 @@ export default function AdminTags(props) {
           })}
       </List>
       {tag &&  <ListTags tag={tag} list={listTagsite} addListTags={addListTags} deleteListTags={deleteListTags}/>}
+      {tag &&  <TagsOk tag={tag} list={listTagsiteok} addListTags={addListTags} deleteListTags={deleteListTags} putListTags={putListTags}/>}
+
          
       
     </Box>

@@ -1,5 +1,5 @@
 const express = require("express");
-const { getTagsSites, addTagSite, deleteTagsSite } = require("../db/dbSitesTags");
+const { getTagsSites, addTagSite, deleteTagsSite, updetTagsSite } = require("../db/dbSitesTags");
 
 const router = express.Router();
 
@@ -22,8 +22,19 @@ router.get('/:tagId', async(req, res) => {
 
 router.post('/', async(req, res) => {
     try{
+        console.log( req.body.status?  req.body.status : 1);
         const {tagId, url, name} = req.body;
-        const t  = await addTagSite(tagId, url, name)
+        const t  = await addTagSite(tagId, url, name, req.body.status !== 1?  req.body.status : 1)
+        res.status(201).json(t);  
+      }
+    catch(e){
+        res.status(500).send("server failed to connect with DB " + e);
+    }
+})
+router.put('/', async(req, res) => {
+    try{
+        const {id, status} = req.body;
+        const t  = await updetTagsSite(id, status)
         res.status(201).json(t);  
       }
     catch(e){
