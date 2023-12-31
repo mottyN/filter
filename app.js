@@ -10,6 +10,8 @@ const sitesUser = require('./router/siteUser')
 const tagsUser = require('./router/tagsUser')
 const tagSite = require('./router/tagsSites')
 const proxy = require('./router/proxy')
+const tags = require('./router/tags')
+
 
 
 
@@ -28,6 +30,8 @@ app.use("/api/sitesUser", sitesUser);
 app.use("/api/tagsUser", tagsUser);
 app.use("/api/tagSite", tagSite);
 app.use("/api/proxy", proxy);
+app.use("/api/tags", tags);
+
 
 app.use("/",express.static(path.join(__dirname, "client",'build')));
 app.get('/*', (req, res) => {

@@ -36,6 +36,33 @@ export default function AddTags({ tags }) {
     }
   };
 
+  const addTags = async() => {
+    if(name === ''){
+      alert("הכנס שם")
+      return;
+    }
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/tags/user/`,
+
+        {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: name}),
+        }
+      );
+      let data = await res.json()
+      setName('')
+      if(data){
+        alert('ההצעה נשלחה')
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
     <div>
       <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -76,15 +103,15 @@ export default function AddTags({ tags }) {
         >
           <h3>הצעת תגית חדשה</h3>
 
-          <TextField id="standard-basic" label="שם התגית" variant="standard" />
-          <TextField
+          <TextField id="standard-basic" label="שם התגית" variant="standard" value={name} onChange={(e) => setName(e.target.value)}/>
+          {/* <TextField
             id="standard-basic"
             label="כתובת אתר לדוגמא"
             variant="standard"
           />
-          <TextField id="standard-basic" label="שם האתר " variant="standard" />
+          <TextField id="standard-basic" label="שם האתר " variant="standard" /> */}
 
-          <Button variant="contained">
+          <Button variant="contained" onClick={addTags}>
             שלח הצעה
           </Button>
         </Box>

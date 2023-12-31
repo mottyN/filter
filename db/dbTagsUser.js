@@ -14,6 +14,7 @@ const { pool, getUser } = require("./db");
     const sql = `
     SELECT * 
     FROM tags 
+    WHERE status = 1
     `
     const [res] = await pool.query(sql);
     return res;

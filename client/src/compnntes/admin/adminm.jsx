@@ -12,8 +12,9 @@ export function Adiminm(){
         reqTags()
     },[])
     const reqTags = async() => {
+      console.log("fgvt");
         try {
-          const res = await fetch(`http://localhost:4000/api/tagsUser/`);
+          const res = await fetch(`http://localhost:4000/api/tags/`);
           const data = await res.json();
           settags(data);
           console.log(data);
@@ -26,7 +27,7 @@ export function Adiminm(){
         <div>
             <Panel setPage={setPage}/>
             {page === 0 && <Admin />}
-            {page === 1 && <AdminTags tags={tags}/>}
+            {page === 1 && <AdminTags tags={tags} reqTags={reqTags}/>}
 
             {page === 3 && <AdminUsers />}
 
