@@ -49,6 +49,8 @@ function Login(){
         setData(data)
         if (response.ok) {
           // setCon(true)
+          var userDataJSON = JSON.stringify(data);
+          localStorage.setItem('userData', userDataJSON);
           window.location.href = `/users/${id}`;
           alert("הצלחה")
         } else {

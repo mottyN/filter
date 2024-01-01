@@ -71,9 +71,10 @@ function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission behavior.
+    const domin = "http://localhost:4000";
 
     try {
-      const response = await fetch("./api/users", {
+      const response = await fetch(`${domin}/api/users `, {
         method: "post",
         headers: {
           "Content-Type": "application/json", // Specify the content type if sending JSON data.
@@ -88,6 +89,7 @@ function SignUp() {
       if (response.ok) {
         window.location.href = "/login";
         alert("המשתמש נוצר בהצלחה");
+   
       } else {
         errMessage(data.message);
         console.error("Request failed with status:", response.status);

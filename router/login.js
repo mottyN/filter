@@ -1,5 +1,8 @@
-// import express, { json } from 'express';
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
+const env = require('dotenv').config();
 const express = require("express");
+let refreshTokens = []
 
 const {
     createUser,
@@ -22,16 +25,23 @@ router.post("/", async (req, res) => {
             console.log(users);
             const user = findUser(name, password, users)
             if(user){
-                res.status(200).json(user);
+
+                const user = { name: name }
+                const accessToken = generateAccessToken(user)
+                const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+                refreshTokens.push(refreshToken)
+                res.status(201).json({...user, accessToken: accessToken, refreshToken: refreshToken});
+
+                // res.status(200).json(user);
             }
             else{
-                res.status(404).send('not fuond');
+                res.status(403).send('not fuond');
             }
         } else {
             res.status(400).send("user must have a name and an passwords");
         }
     } catch (error) {
-        res.status(500).send("server failed to connect with DB");
+        res.status(500).send("server failed to connect with DB " + error);
     }
 });
 module.exports = router
@@ -48,3 +58,9 @@ function findUser(name, password ,users ) {
     // אם לא נמצא משתמש עם הנתונים שסופקו
     return null;
 }
+
+
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+  }
+  

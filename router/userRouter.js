@@ -1,4 +1,9 @@
 const express = require("express");
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
+const env = require('dotenv').config();
+
+
 const {
     createUser,
     deleteUser,
@@ -6,6 +11,7 @@ const {
     getUsers,
     updateUser,
 } = require("../db/db");
+let refreshTokens = []
 
 const router = express.Router();
 
@@ -38,12 +44,18 @@ router.post("/", async (req, res) => {
         if (name  && email && password) {
             console.log(req.body);
             const newUser = await createUser(name, email, password);
-            res.status(201).json(newUser);
+
+
+            const user = { name: name }
+            const accessToken = generateAccessToken(user)
+            const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+            refreshTokens.push(refreshToken)
+            res.status(201).json({...newUser, accessToken: accessToken, refreshToken: refreshToken});
         } else {
             res.status(400).send("user must have a name and an age");
         }
     } catch (error) {
-        res.status(500).send("server failed to connect with DB");
+        res.status(500).send("server failed to connect with DB"+error);
     }
 });
 
@@ -78,5 +90,9 @@ router.put("/:id", async (req, res) => {
     }
 });
 
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+  }
+  
 
 module.exports = router
