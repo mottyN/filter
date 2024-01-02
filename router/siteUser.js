@@ -10,6 +10,8 @@ const { updateSites } = require("../db/dbSites");
 const router = express.Router();
 
 router.get("/:userId", async (req, res) => {
+  console.log(req.params.userId);
+  if(req.user.id !=req.params.userId) return res.sendStatus(403)
   try {
     const sites = await getSiteUser(req.params.userId);
     res.json(sites);
@@ -20,6 +22,8 @@ router.get("/:userId", async (req, res) => {
 });
 
 router.post("/:userId", async (req, res) => {
+  if(req.user.id !=req.params.userId) return res.sendStatus(403)
+
   console.log(req.params.userId);
   const user = await getUser(req.params.userId);
   if (!user) {
@@ -41,6 +45,8 @@ router.post("/:userId", async (req, res) => {
 
 
 router.put("/:id", async (req, res) => {
+  if(req.user.id !=req.params.id) return res.sendStatus(403)
+
   try {
     const { status } = req.body;
     // console.log(status);
@@ -62,6 +68,8 @@ router.put("/:id", async (req, res) => {
 
 
 router.delete("/:id", async (req, res) => {
+  if(req.user.id !=req.params.id) return res.sendStatus(403)
+
   try {
       const deleted = await deleteSiteUser(req.params.id);
       if (deleted) {

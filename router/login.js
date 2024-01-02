@@ -15,6 +15,7 @@ const {
 const router = express.Router();
 
 router.post("/", async (req, res) => {
+  
     try {
         const {   name, password } = req.body;
        console.log( password);
@@ -25,10 +26,16 @@ router.post("/", async (req, res) => {
             console.log(users);
             const user = findUser(name, password, users)
             if(user){
-
-                const user = { name: name }
-                const accessToken = generateAccessToken(user)
-                const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+                if(req.query.admin === 'true'){
+                    console.log("dfgd");
+                    if (user.id != 4) {
+                        res.sendStatus(403)
+                        return
+                    }
+                }
+                const usert = { id: user.id }
+                const accessToken = generateAccessToken(usert)
+                const refreshToken = jwt.sign(usert, process.env.REFRESH_TOKEN_SECRET)
                 refreshTokens.push(refreshToken)
                 res.status(201).json({...user, accessToken: accessToken, refreshToken: refreshToken});
 
@@ -61,6 +68,6 @@ function findUser(name, password ,users ) {
 
 
 function generateAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
   }
   

@@ -35,6 +35,7 @@ export default function Tags(props) {
   const [listTagsite, setListTagsite] = React.useState({});
 
   const { id } = useParams();
+  var storedUserData = JSON.parse(localStorage.getItem("userData"));
 
   // console.log(props.tagsClosed);
   const handleToggle = (value) => () => {
@@ -75,7 +76,9 @@ export default function Tags(props) {
   const reqListTags = async (id) => {
     console.log(id);
     try {
-      const res = await fetch(`http://localhost:4000/api/tagSite/${id}`);
+      const res = await fetch(`http://localhost:4000/api/tagSite/${id}`, {
+        headers: { authorization: storedUserData.accessToken },
+      });
       const data = await res.json();
       console.log(data);
       let arr = [];

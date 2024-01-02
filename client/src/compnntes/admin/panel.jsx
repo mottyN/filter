@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { Person } from "@mui/icons-material";
 
 const pages = ["אתרים", "תגיות", "תמיכה", "לקוחות"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "חשבון", "יציאה"];
 
 export function Panel(props) {
   const [anchorElNav, setAnchorElNav] = React.useState("");

@@ -15,7 +15,36 @@ let refreshTokens = []
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader 
+    console.log(authHeader , token);
+    if (token == null) return res.sendStatus(401)
+  
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      console.log(err)
+      if (err) return res.sendStatus(403)
+      req.user = user
+      next()
+    })
+  }
+  function authenticateTokenAdmin(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader 
+    console.log(authHeader , token);
+    if (token == null) return res.sendStatus(401)
+  
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      console.log(err)
+      if (err) return res.sendStatus(403)
+      if (user.id !== 4) return res.sendStatus(403)
+
+      req.user = user
+      next()
+    })
+  }
+
+router.get("/", authenticateTokenAdmin,async (req, res) => {
     try {
         const users = await getUsers();
         res.json(users);
@@ -24,7 +53,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticateTokenAdmin,async (req, res) => {
     try {
         const user = await getUser(req.params.id);
         if (user) {
@@ -59,7 +88,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateToken,async (req, res) => {
     try {
         const deleted = await deleteUser(req.params.id);
         if (deleted) {
@@ -72,7 +101,7 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticateToken,async (req, res) => {
     try {
         const { name, userName, email, passwords } = req.body;
         if (name && userName && email && passwords) {

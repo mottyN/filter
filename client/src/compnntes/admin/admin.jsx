@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SiteAdmin from "./siteAdmin";
 import { useEffect, useState } from "react";
 import { Panel } from "./panel";
@@ -7,15 +7,23 @@ export function Admin() {
   const [sites, setSites] = useState([]);
   const [addSite, setAddSite] = useState('')
   const [addName, setAddName] = useState('')
+  const nav = useNavigate();
 
+  var storedUserData = JSON.parse(localStorage.getItem("userData"));
 
   useEffect(() => {
     getSite();
+    if (storedUserData === null) {
+      console.log(storedUserData);
+      nav("/");
+    }
   }, []);
 
   const getSite = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/sites/");
+      const res = await fetch("http://localhost:4000/api/sites/", {
+        headers: { authorization: storedUserData.accessToken },
+      });
       const data = await res.json();
       setSites(data);
       console.log(data);
@@ -28,6 +36,7 @@ export function Admin() {
       const res = await fetch(`http://localhost:4000/api/sites/${id}`, {
         method: "put",
         headers: {
+          authorization: storedUserData.accessToken,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ status: status }),
@@ -45,6 +54,7 @@ export function Admin() {
       const res = await fetch(`http://localhost:4000/api/sites/`, {
         method: "post",
         headers: {
+          authorization: storedUserData.accessToken,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ url : addSite, name: addName}),

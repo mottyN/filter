@@ -11,10 +11,15 @@ export default function AddTags({ tags }) {
   const [urlAdd, setUrlAdd] = React.useState('');
   const [name, setName] = React.useState('');
   const [url, setUrl] = React.useState('');
+  var storedUserData = JSON.parse(localStorage.getItem("userData"));
 
 
   console.log(value);
   const addsiteTag = async () => {
+    if(!nameAdd || !urlAdd){
+      alert('אנא מלא את כל השדות')
+      return
+    }
     try {
       const res = await fetch(
         `http://localhost:4000/api/tagSite/`,
@@ -22,6 +27,7 @@ export default function AddTags({ tags }) {
         {
           method: "post",
           headers: {
+            authorization: storedUserData.accessToken,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ tagId: value.id, url: urlAdd, name : nameAdd, status: 0 }),
@@ -30,6 +36,8 @@ export default function AddTags({ tags }) {
       let data = await res.json()
       if(data.status){
         alert('ההצעה נשלחה')
+        setNameAdd('');
+        setUrlAdd('')
       }
     } catch (e) {
       console.log(e);
@@ -48,6 +56,7 @@ export default function AddTags({ tags }) {
         {
           method: "post",
           headers: {
+            authorization: storedUserData.accessToken,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ name: name}),

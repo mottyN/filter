@@ -16,7 +16,8 @@ router.get('/', async(req,res) => {
 })
 
 router.get('/:userId', async(req, res) =>{
-    
+    if(req.user.id !=req.params.userId) return res.sendStatus(403)
+
     try{
         const user = await getUser(req.params.userId);
     if (!user) {
@@ -33,6 +34,8 @@ router.get('/:userId', async(req, res) =>{
 })
 
 router.post('/:userId', async(req, res) => {
+    if(req.user.id !=req.params.userId) return res.sendStatus(403)
+
     const user = await getUser(req.params.userId);
   if (!user) {
     res.status(500).send("not user");
@@ -50,6 +53,8 @@ router.post('/:userId', async(req, res) => {
 })
 
 router.delete('/:userId/:tagId', async(req, res) => {
+    if(req.user.id !=req.params.userId) return res.sendStatus(403)
+
     try{
         const user = await getUser(req.params.userId);
         if (!user) {

@@ -23,6 +23,7 @@ export default function AdminTags(props) {
   const [tag, setTag] = React.useState(null);
   const [listTagsite, setListTagsite] = React.useState({});
   const [listTagsiteok, setListTagsiteok] = React.useState({});
+  var storedUserData = JSON.parse(localStorage.getItem("userData"));
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -40,7 +41,9 @@ export default function AdminTags(props) {
   const reqListTags = async (id) => {
     console.log(id);
     try {
-      const res = await fetch(`http://localhost:4000/api/tagSite/${id}`);
+      const res = await fetch(`http://localhost:4000/api/tagSite/${id}`, {
+        headers: { authorization: storedUserData.accessToken },
+      });
       const data = await res.json();
       let arr = [];
       let arrOk = [];
@@ -66,6 +69,7 @@ export default function AdminTags(props) {
       const res = await fetch(`http://localhost:4000/api/tagSite/`, {
         method: "post",
         headers: {
+          authorization: storedUserData.accessToken,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ tagId: tagId, url, name }),
@@ -86,6 +90,7 @@ export default function AdminTags(props) {
       const res = await fetch(`http://localhost:4000/api/tagSite/`, {
         method: "put",
         headers: {
+          authorization: storedUserData.accessToken,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ id: id, status: 1 }),
@@ -101,6 +106,9 @@ export default function AdminTags(props) {
     // console.log(obj);
     try {
       const res = await fetch(`http://localhost:4000/api/tagSite/${id}`, {
+        headers: {
+          authorization: storedUserData.accessToken
+        },
         method: "Delete",
       });
       // const data = await res.json();
@@ -124,6 +132,7 @@ export default function AdminTags(props) {
       const res = await fetch(`http://localhost:4000/api/tags/admin`, {
         method: "put",
         headers: {
+          authorization: storedUserData.accessToken,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ id: id, status: 1 }),
@@ -138,6 +147,7 @@ export default function AdminTags(props) {
       const res = await fetch(`http://localhost:4000/api/tags/admin`, {
         method: "Delete",
         headers: {
+          authorization: storedUserData.accessToken,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ id: id }),
