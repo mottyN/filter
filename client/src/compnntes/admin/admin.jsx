@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SiteAdmin from "./siteAdmin";
 import { useEffect, useState } from "react";
 import { Panel } from "./panel";
+import DataTable from "./siteAdmin1";
 
 export function Admin() {
   const [sites, setSites] = useState([]);
@@ -74,12 +75,11 @@ export function Admin() {
     <div>
       {/* <Panel /> */}
       <h1>מערכת ניהול סינון אתרים</h1>
-      <div style={{ margin: "10px" }}>
+      {/* <div style={{ margin: "10px" }}>
         <Link to={"adminUsers"}>
-          {" "}
-          {/* <button>לקוחות</button> */}
+        
         </Link>
-      </div>
+      </div> */}
       <div
         style={{
           border: "1px black solid",
@@ -90,9 +90,9 @@ export function Admin() {
         }}
       >
         <h5>רשימת אתרים סגורה</h5>
-        <label>חיפוש</label>
-        <input type="text" />
-        <div
+        {/* <label>חיפוש</label>
+        <input type="text" /> */}
+        {/* <div
           style={{
             margin: "10px",
             border: "1px black solid",
@@ -100,22 +100,31 @@ export function Admin() {
             margin: "auto",
             padding: "10px",
           }}
-        >
+        > */}
           {/* <p>https://www.kore.co.il/flashNews#f104314</p>
           <p>https://www.kore.co.il/flashNews#f104314</p>
           <p>https://www.kore.co.il/flashNews#f104314</p>
           <p>https://www.kore.co.il/flashNews#f104314</p>
           <p>https://www.kore.co.il/flashNews#f104314</p> */}
           {sites && (
-            <SiteAdmin
+            <>  
+            {/* <SiteAdmin
               categories={sites}
               siteClosed={sites
                 .filter((item) => item.status === 0)
                 .map((item) => item.url)}
               setsiteClosed={setsiteClosed}
-            />
+            /> */}
+                {/* <DataTab data={sites}/> */}
+                <DataTable data={sites}  siteClosed={sites
+                .filter((item) => item.status === 0)
+                .map((item) => item.id)}
+                setsiteClosed={setsiteClosed}
+                />
+                            
+            </>
           )}
-        </div>
+        {/* </div> */}
         <label>הוספת אתר לרשימה</label>
         <input type="text" value={addSite} onChange={(e) => setAddSite(e.target.value)} placeholder="כתובת אתר"/>
         <input type="text" value={addName} onChange={(e) => setAddName(e.target.value)}  placeholder="שם האתר"/>

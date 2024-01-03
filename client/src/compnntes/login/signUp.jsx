@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
-import "./Login.css";
+// import "./Login.css";
 
 function SignUp() {
   const [name, setname] = useState("");
@@ -101,7 +101,47 @@ function SignUp() {
   };
 
   return (
-    <div className="App">
+    <div className="App" style={{ textAlign: 'center', marginTop: '50px' }}>
+              <style>
+        {`
+          /* הוסף את הCSS הבא ישירות כאן */
+          .App {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+          }
+
+          form {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+
+          h1, h3 {
+            text-align: center;
+            color: #333;
+          }
+
+          /* עוד קוד כמו שהוא */
+
+          @media screen and (max-width: 768px) {
+            form {
+              width: 70%;
+            }
+          }
+
+          @media screen and (max-width: 480px) {
+            form {
+              width: 90%;
+            }
+          }
+        `}
+      </style>
       <h1>קהילות קארד</h1>
       <h3>הרשמה</h3>
       {/* {from && (
@@ -119,7 +159,7 @@ function SignUp() {
        
         <form
           onSubmit={handleSubmit}
-          style={{ width: isMobile ? "70%" : "25%" }}
+          // style={{ width: isMobile ? "70%" : "25%" }}
         >
              <div className="form-group">
             <label htmlFor="name">  שם משתמש </label>
