@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Outlet, Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, Link, useParams, useLocation } from "react-router-dom";
 import "./Login.css";
 import { Connection } from "./connection";
 
@@ -13,6 +13,15 @@ function Login() {
   const [admin, setAdmin]= useState(false)
   const { id } = useParams();
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const isadmin = queryParams.get('admin');
+  useEffect(()=> {
+    if(isadmin == '1') {
+      setAdmin(true)
+    }
+  },[])
+  console.log(admin);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -61,7 +70,7 @@ function Login() {
 
           window.location.href = `/users/${data.id}`;
         }
-        alert("הצלחה");
+        // alert("הצלחה");
       } else {
         console.log(data.massenge);
         // errMessage(data.message)
@@ -160,10 +169,10 @@ function Login() {
             </div>
             {/* <Link to="/forgotPassword">שכחת סיסמתך לחץ כאן</Link> */}
           </div>
-          <label htmlFor="admin">
+          {/* <label htmlFor="admin">
             <input id="admin" type="checkbox" checked={admin} onChange={(e)=>setAdmin(e.target.checked)}/>
             התחברות כמנהל
-          </label>
+          </label> */}
           <br/>
           <button type="submit">כניסה</button>
           <br></br>

@@ -23,6 +23,14 @@ async function checkDBConnection() {
   }
    async function getUsers() {
     const sql = `
+          SELECT id, name, email
+          FROM users;
+      `;
+    const [res] = await pool.query(sql);
+    return res;
+  }
+  async function getUsersAll() {
+    const sql = `
           SELECT *
           FROM users;
       `;
@@ -82,4 +90,4 @@ async function checkDBConnection() {
   }
   
 
-  module.exports = {pool, checkDBConnection, getUser, getUsers, createUser, deleteUser, updateUser}
+  module.exports = {pool, checkDBConnection, getUser, getUsers, createUser, deleteUser, updateUser, getUsersAll}

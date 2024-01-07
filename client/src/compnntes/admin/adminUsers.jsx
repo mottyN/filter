@@ -67,19 +67,19 @@ export  function AdminUsers() {
             <StyledTableCell>שם</StyledTableCell>
             <StyledTableCell align="right">id</StyledTableCell>
             <StyledTableCell align="right">כתובת מייל</StyledTableCell>
-            <StyledTableCell align="right">סיסמא</StyledTableCell>
+            {/* <StyledTableCell align="right">סיסמא</StyledTableCell> */}
             {/* <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <StyledTableRow key={row.name}>
+            <StyledTableRow key={row.id}>
               <StyledTableCell component="th" scope="row">
                 {row.name}
               </StyledTableCell>
               <StyledTableCell align="right">{row.id}</StyledTableCell>
               <StyledTableCell align="right">{row.email}</StyledTableCell>
-              <StyledTableCell align="right">{row.password}</StyledTableCell>
+              {/* <StyledTableCell align="right">{row.password}</StyledTableCell> */}
               {/* <StyledTableCell align="right">{row.protein}</StyledTableCell> */}
             </StyledTableRow>
           ))}

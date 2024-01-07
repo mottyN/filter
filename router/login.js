@@ -10,6 +10,7 @@ const {
     getUser,
     getUsers,
     updateUser,
+    getUsersAll,
 } = require("../db/db");
 
 const router = express.Router();
@@ -22,7 +23,7 @@ router.post("/", async (req, res) => {
         if (name &&  password) {
             console.log(req.body);
             
-            const users = await getUsers();
+            const users = await getUsersAll();
             console.log(users);
             const user = findUser(name, password, users)
             if(user){
