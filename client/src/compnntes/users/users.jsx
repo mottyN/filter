@@ -59,6 +59,25 @@ export function Users() {
       alert("אירעה שגיאה נסה שוב");
     }
   };
+  const statusSite = async (users_sites_id,status) => {
+    try {
+      const res = await fetch(`http://localhost:4000/api/sitesUser/${users_sites_id}`, {
+        method: "put",
+        headers: {
+          authorization: storedUserData.accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status:  status  }),
+      });
+      const data = await res.json();
+      // reqSite();
+      // setSites(data);
+      // console.log(data);
+    } catch (e) {
+      console.log(e);
+      alert("אירעה שגיאה נסה שוב");
+    }
+  };
   const deleteSite = async (users_sites_id) => {
     try {
       const res = await fetch(
@@ -149,6 +168,7 @@ export function Users() {
           sites={sites}
           addSite={addSite}
           deleteSite={deleteSite}
+          statusSite={statusSite}
           tagsClosed={tagsClosed}
         />
       )}

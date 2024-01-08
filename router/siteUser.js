@@ -45,7 +45,7 @@ router.post("/:userId", async (req, res) => {
 
 
 router.put("/:id", async (req, res) => {
-  if(req.user.id !=req.params.id) return res.sendStatus(403)
+  // if(req.user.id !=req.params.id) return res.sendStatus(403)
 
   try {
     const { status } = req.body;
@@ -68,7 +68,7 @@ router.put("/:id", async (req, res) => {
 
 
 router.delete("/:id", async (req, res) => {
-  if(req.user.id !=req.params.id) return res.sendStatus(403)
+  // if(req.user.id !=req.params.id) return res.sendStatus(403)
 
   try {
       const deleted = await deleteSiteUser(req.params.id);

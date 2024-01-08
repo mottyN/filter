@@ -30,16 +30,26 @@ export default function SwitchListSecondary(props) {
 
   React.useEffect(()=>{
     setList(props.sites)
+    let arr = []
+    props.sites.map((o) => {
+      if(o.status_user === 0){
+        arr.push(o.name)
+      }
+    })
+    setChecked(arr)
   },[props.sites])
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
+  const handleToggle = (o) => () => {
+    const currentIndex = checked.indexOf(o.name);
     const newChecked = [...checked];
-
+    console.log(o);
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(o.name);
+      props.statusSite(o.users_sites_id, 0)
     } else {
       newChecked.splice(currentIndex, 1);
+      props.statusSite(o.users_sites_id, 1)
+
     }
 
     setChecked(newChecked);
@@ -120,7 +130,7 @@ export default function SwitchListSecondary(props) {
                 <Switch
                   edge="end"
                   onChange={handleToggle(p)}
-                  checked={checked.indexOf(p) !== -1}
+                  checked={checked.indexOf(p.name) !== -1}
                   inputProps={{
                     "aria-labelledby": "switch-list-label-wifi",
                   }}

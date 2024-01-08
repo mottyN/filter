@@ -15,7 +15,7 @@ import { useSearchParams } from "react-router-dom";
 import { TagsOk } from "./tagsOk";
 import DoneIcon from "@mui/icons-material/Done";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 
 export default function AdminTags(props) {
   const [checked, setChecked] = React.useState(["wifi"]);
@@ -25,19 +25,50 @@ export default function AdminTags(props) {
   const [listTagsiteok, setListTagsiteok] = React.useState({});
   var storedUserData = JSON.parse(localStorage.getItem("userData"));
 
-  const handleToggle = (value) => () => {
+  React.useEffect(() => {
+    let arr = []
+    props.tags.map((o) => {
+      if(o.status === 0){
+        arr.push(o.name)
+      }
+    })
+    setChecked(arr)
+  },[props.tags])
+  const handleToggle = (value, id) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
     if (currentIndex === -1) {
+      statusTag(id, 0)
       newChecked.push(value);
     } else {
       newChecked.splice(currentIndex, 1);
+      statusTag(id, 1)
+
     }
 
     setChecked(newChecked);
+    // props.reqTags()
   };
+  const statusTag = async(id, status) => {
+    try {
+      const res = await fetch(`http://localhost:4000/api/tags/admin`, {
+        method: "put",
+        headers: {
+          authorization: storedUserData.accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id, status: status }),
+      });
+      const data = await res.json();
+      // setListTagsite(data);
+      console.log(data);
 
+      // reqListTags(tagId);
+    } catch (e) {
+      console.log(e);
+    }
+  }
   const reqListTags = async (id) => {
     console.log(id);
     try {
@@ -107,7 +138,7 @@ export default function AdminTags(props) {
     try {
       const res = await fetch(`http://localhost:4000/api/tagSite/${id}`, {
         headers: {
-          authorization: storedUserData.accessToken
+          authorization: storedUserData.accessToken,
         },
         method: "Delete",
       });
@@ -120,14 +151,14 @@ export default function AdminTags(props) {
   };
 
   const showtags = (obj) => {
-    if(tag !== null && obj.id === tag.id){
+    if (tag !== null && obj.id === tag.id) {
       setTag(null);
-      return
+      return;
     }
     setTag(obj);
     reqListTags(obj.id);
   };
-  const updeuTag = async(id) => {
+  const updeuTag = async (id) => {
     try {
       const res = await fetch(`http://localhost:4000/api/tags/admin`, {
         method: "put",
@@ -137,12 +168,12 @@ export default function AdminTags(props) {
         },
         body: JSON.stringify({ id: id, status: 1 }),
       });
-      props.reqTags()
+      props.reqTags();
     } catch (e) {
       console.log(e);
     }
-  }
-  const deleteTag = async(id) => {
+  };
+  const deleteTag = async (id) => {
     try {
       const res = await fetch(`http://localhost:4000/api/tags/admin`, {
         method: "Delete",
@@ -152,11 +183,11 @@ export default function AdminTags(props) {
         },
         body: JSON.stringify({ id: id }),
       });
-      props.reqTags()
+      props.reqTags();
     } catch (e) {
       console.log(e);
     }
-  }
+  };
   return (
     <Box
       sx={{
@@ -164,67 +195,70 @@ export default function AdminTags(props) {
         marginX: "auto",
         display: "flex",
         justifyContent: "center",
-
       }}
     >
-      {tag === null &&
-      <div style={{ display: "flex"}}>
-
-      < List
-        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-        subheader={<ListSubheader>רשימת תגיות</ListSubheader>}
-      >
-        {props.tags &&
-          props.tags.map((o) => {
-            if (o.status === -1) {
-              return;
-            }
-            return (
-              <ListItem key={o.id}>
-                <IconButton onClick={() => showtags(o)}>
-                  <PreviewIcon />
-                </IconButton>
-                <ListItemText id={o.id} primary={o.name} />
-                <Switch
-                  edge="end"
-                  onChange={handleToggle(o.name)}
-                  checked={checked.indexOf(o.name) !== -1}
-                  inputProps={{
-                    "aria-labelledby": "switch-list-label-wifi",
-                  }}
-                />
-              </ListItem>
-            );
-          })}
-      </List>
-      <List
-        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-        subheader={<ListSubheader> תגיות ממתינות לאישור</ListSubheader>}
-      >
-        {props.tags &&
-          props.tags.map((o) => {
-            if (o.status !== -1) {
-              return;
-            }
-            return (
-              <ListItem key={o.id}>
-                 <ListItemText id={o.id} primary={o.name} />
-                <IconButton onClick={()=>updeuTag(o.id)}>
-                  <DoneIcon />
-                </IconButton>
-                <IconButton onClick={()=>deleteTag(o.id)}>
-                  <DeleteIcon />
-                </IconButton>
-               
-              </ListItem>
-            );
-          })}
-      </List>
-      </div>
-      }
-      {/* <button st>חזרה לרשימת התגיות</button> */}
-      {tag &&  <Button variant="contained" sx={{height: "50px", margin: '20px'}} onClick={() => setTag(null)}>חזרה לרשימת התגיות</Button>}
-     
+      {tag === null && (
+        <div style={{ display: "flex" }}>
+          <List
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+            subheader={<ListSubheader>רשימת תגיות</ListSubheader>}
+          >
+            {props.tags &&
+              props.tags.map((o) => {
+                if (o.status === -1) {
+                  return;
+                }
+                return (
+                  <ListItem key={o.id}>
+                    <IconButton onClick={() => showtags(o)}>
+                      <PreviewIcon />
+                    </IconButton>
+                    <ListItemText id={o.id} primary={o.name} />
+                    <Switch
+                      edge="end"
+                      onChange={handleToggle(o.name, o.id)}
+                      checked={checked.indexOf(o.name) !== -1}
+                      inputProps={{
+                        "aria-labelledby": "switch-list-label-wifi",
+                      }}
+                    />
+                  </ListItem>
+                );
+              })}
+          </List>
+          <List
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+            subheader={<ListSubheader> תגיות ממתינות לאישור</ListSubheader>}
+          >
+            {props.tags &&
+              props.tags.map((o) => {
+                if (o.status !== -1) {
+                  return;
+                }
+                return (
+                  <ListItem key={o.id}>
+                    <ListItemText id={o.id} primary={o.name} />
+                    <IconButton onClick={() => updeuTag(o.id)}>
+                      <DoneIcon />
+                    </IconButton>
+                    <IconButton onClick={() => deleteTag(o.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItem>
+                );
+              })}
+          </List>
+        </div>
+      )}
+      {tag && (
+        <Button
+          variant="contained"
+          sx={{ height: "50px", margin: "20px" }}
+          onClick={() => setTag(null)}
+        >
+          חזרה לרשימת התגיות
+        </Button>
+      )}
 
       {tag && (
         <ListTags
