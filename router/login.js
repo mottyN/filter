@@ -70,6 +70,6 @@ function findUser(name, password ,users ) {
 
 function generateAccessToken(user) {
     // return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1000m' });
   }
   

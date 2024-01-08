@@ -19,9 +19,9 @@ router.post("/", async (req, res) => {
       // console.log(req.body);
 
       const users = await getUsers();
-      // console.log(users);
-      const user = findUser(name, password, users);
+      const user = findUser(name,  users);
       const { url } = req.body;
+      console.log(user+"gdgdfg");
       if (user) {
         const sites = await getSites();
         let site = false;
@@ -109,11 +109,13 @@ router.post("/", async (req, res) => {
   }
 });
 
-function findUser(name, password, users) {
+function findUser(name, users) {
   // עבור כל משתמש במערך
+  // console.log(password);
   for (let i = 0; i < users.length; i++) {
     // בדיקה אם השם משתמש והסיסמה תואמים
-    if (users[i].name === name && users[i].password == password) {
+    // console.log(users[i]);
+    if (users[i].name == name  ) {
       // אם תואמים, החזרת המשתמש
       return users[i];
     }
