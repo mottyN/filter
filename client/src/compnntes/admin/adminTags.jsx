@@ -62,6 +62,7 @@ export default function AdminTags(props) {
       });
       const data = await res.json();
       // setListTagsite(data);
+      props.reqTags()
       console.log(data);
 
       // reqListTags(tagId);

@@ -9,6 +9,7 @@ const {
   getTagsUser,
   getTagsUserByTagID,
 } = require("../db/dbTagsUser");
+const { getTags } = require("../db/dbTags");
 const router = express.Router();
 
 router.post("/", async (req, res) => {
@@ -62,6 +63,7 @@ router.post("/", async (req, res) => {
         }
 
         const sitesUser = await getSiteUser(user.id);
+        
         let siteUser;
         for (var i = 0; i < sitesUser.length; i++) {
           if (sitesUser[i].url.includes(url)) {
@@ -70,11 +72,12 @@ router.post("/", async (req, res) => {
             break;
           }
         }
+        console.log(siteUser);
 
         // const siteUser = sitesUser.find((obj) => {
         //   return obj.url === `https://${url}`;
         // });
-        if (siteUser?.status === 0) {
+        if (siteUser?.status_user=== 0) {
           res.status(200).end("false");
           return;
         }
@@ -82,9 +85,17 @@ router.post("/", async (req, res) => {
         const tags = await getTagsSitesBySiteId(site.id);
 
         if (tags) {
+          // console.log(tags);
           let fleg = false;
 
           for (i in tags) {
+
+            const tag =  await getTags(tags[i].tags_id)
+            // console.log(tag[0]);
+            if (tag[0].status == 0){
+              res.status(200).end("false");
+              return;
+            }
             const tagUser = await getTagsUserByTagID(tags[i].tags_id, user.id);
             console.log(tagUser);
             if (tagUser.length > 0) {

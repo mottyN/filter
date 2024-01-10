@@ -10,6 +10,8 @@ const sitesUser = require('./router/siteUser')
 const tagsUser = require('./router/tagsUser')
 const tagSite = require('./router/tagsSites')
 const proxy = require('./router/proxy')
+const email = require('./email')
+
 const tags = require('./router/tags')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
@@ -61,6 +63,8 @@ app.use("/api/tagsUser",authenticateToken, tagsUser);
 app.use("/api/tagSite",authenticateToken, tagSite);
 app.use("/api/proxy", proxy);
 app.use("/api/tags",authenticateToken, tags);
+app.use("/api/email", email);
+
 
 
 app.use("/",express.static(path.join(__dirname, "client",'build')));

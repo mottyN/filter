@@ -13,7 +13,7 @@ async function getTagsSites(tagID) {
 }
 async function getTagsSitesBySiteId(siteID) {
   const sql = `
-  SELECT sites_tags.id AS  users_sites_id ,sites_tags.status AS statusOk,  sites.url, sites.name, sites.status AS status 
+  SELECT sites_tags.id AS  users_sites_id , tags_id ,sites_tags.status AS statusOk,  sites.url, sites.name, sites.status AS status 
   FROM sites_tags
   INNER JOIN sites ON sites_tags.sites_id = sites.id
   WHERE sites_id = ?;
@@ -44,10 +44,11 @@ async function addTagSite(tagID, url, name, status) {
   }
   // console.log(tagID, site.id);
   const sql = `
-    INSERT INTO sites_tags  (tags_id, sites_id, status)  VALUES (?,?,?);
-    `;
+  INSERT INTO sites_tags  (tags_id, sites_id, status)  VALUES (?,?,?);
+  `;
   const [{ insertId }] = await pool.query(sql, [tagID, site.id, status]);
-  console.log(insertId);
+  // console.log("kjugj");
+  // console.log(insertId);
   return getTagsSitesById(insertId);
 }
 

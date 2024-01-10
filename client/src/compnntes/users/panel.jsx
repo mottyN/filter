@@ -15,7 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { AccessAlarm, Person } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['הגדרות סינון אישיות ', 'תגיות', 'הצעות לתיוג'];
+const pages = ['הגדרות סינון אישיות ', 'תגיות', 'הצעות לתיוג', "תמיכה"];
 const settings = [ 'חשבון',  'יציאה'];
 
 function ResponsiveAppBar(props) {

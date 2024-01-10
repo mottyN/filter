@@ -19,12 +19,16 @@
   "homepage": "https://github.com/mottyN/filter#readme",
   "dependencies": {
     "bili": "^5.0.5",
-    "dotenv": "^16.3.1",
     "expres": "^0.0.5",
+    "googleapis": "^130.0.0",
     "http-parser-js": "^0.5.8",
     "http-proxy": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "mysql2": "^3.6.5"
+    "mysql2": "^3.6.5",
+    "nodemailer": "^6.9.8"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1"
   }
 }

@@ -4,6 +4,7 @@ import ResponsiveAppBar from "./panel";
 import Tags from "./Tags";
 import AddTags from "./addTags";
 import { useNavigate, useParams } from "react-router-dom";
+import { Support } from "./support";
 
 export function Users() {
   const [page, setPage] = useState(0);
@@ -70,7 +71,7 @@ export function Users() {
         body: JSON.stringify({ status:  status  }),
       });
       const data = await res.json();
-      // reqSite();
+      reqSite();
       // setSites(data);
       // console.log(data);
     } catch (e) {
@@ -188,6 +189,12 @@ export function Users() {
         <>
           {" "}
           <p>הצעות לתיוג</p> <AddTags tags={tags} />
+        </>
+      )}
+        {page === 3 && (
+        <>
+          {" "}
+          <Support /> 
         </>
       )}
 

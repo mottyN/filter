@@ -24,7 +24,7 @@ router.post('/', async(req, res) => {
     try{
         console.log( req.body.status?  req.body.status : 1);
         const {tagId, url, name} = req.body;
-        const t  = await addTagSite(tagId, url, name, req.body.status !== 1?  req.body.status : 1)
+        const t  = await addTagSite(tagId, url, name, req.body.status ?  req.body.status : 1)
         res.status(201).json(t);  
       }
     catch(e){
