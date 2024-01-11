@@ -18,9 +18,37 @@ export function Support(props) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    //
+    try{
+        const domin = "http://localhost:4000";
+
+        const response = await fetch(`${domin}/api/email `, {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json", // Specify the content type if sending JSON data.
+            },
+            body: JSON.stringify({
+                subject: name+" "+ email,
+              text: message,
+            }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            // window.location.href = "/login";
+            alert("הפניה נשלחה בהצלחה");
+       
+          } else {
+            // errMessage(data.message);
+            console.error("Request failed with status:", response.status);
+          }
+    }
+    catch(e){
+        console.log(e);
+    }
+    setEmail('')
+    setMessage('')
+    setName("")
   };
 
   return (
@@ -35,7 +63,7 @@ export function Support(props) {
         <Grid item xs={12} md={4}>
           <Box sx={{ p: 2 }}>
             <Typography variant="h4" align="center" mb={2}>
-              Contact Us
+              צור קשר
             </Typography>
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
@@ -51,7 +79,7 @@ export function Support(props) {
                 <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
-                    label="Name"
+                    label="שם"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     margin="normal"
@@ -68,7 +96,7 @@ export function Support(props) {
                   />
                   <TextField
                     fullWidth
-                    label="Message"
+                    label="הודעה"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     margin="normal"
@@ -77,7 +105,7 @@ export function Support(props) {
                     rows={4}
                   />
                   <Button variant="contained" type="submit" sx={{ mt: 2 }}>
-                    Submit
+                    שלח
                   </Button>
                 </Grid>
               </Grid>

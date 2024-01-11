@@ -50,12 +50,12 @@ const sendEmail = async (emailOptions) => {
 
 const router = express.Router();
 router.post("/", async (req, res) => {
-  const { subject, text, to } = req.body;
+  const { subject, text } = req.body;
   try {
    let p =  await sendEmail({
       subject: subject,
       text: text,
-      to: to,
+      to: process.env.EMAIL,
       from: process.env.EMAIL,
     });
     console.log(p);
