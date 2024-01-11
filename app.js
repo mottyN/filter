@@ -76,11 +76,11 @@ app.get('/*', (req, res) => {
 const run = async() => {
 
     const dbConnection = await checkDBConnection();
-    if (dbConnection) {
+    // if (dbConnection) {
         app.listen(PORT, () => {
             console.log("app is listening in port: " + PORT);
         });
     }
-}
+// }
 run()
 // console.log(process.env);
