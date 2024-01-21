@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxy Configuration</title>
+</head>
+<body>
+  <h1>Proxy Configuration</h1>
+  <button onclick="configureProxy()">Configure Proxy</button>
+
+  <script>
+    function configureProxy() {
+      var config = {
+        mode: "fixed_servers",
+        rules: {
+          singleProxy: {
+            scheme: "http",
+            host: "שם-ה-פרוקסי",
+            port: "יטכי"
+          },
+          bypassList: ["foobar.com"]
+        }
+      };
+console.log( chrome);
+      chrome.proxy.settings.set(
+        { value: config, scope: "regular" },
+        function() {
+          console.log("Proxy configured successfully");
+        }
+      );
+    }
+  </script>
+</body>
+</html>
