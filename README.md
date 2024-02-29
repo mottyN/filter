@@ -10,24 +10,3 @@
 
 1. התקן את  על דפדפן האינטרנט שלך.
 2. הגדר את האתרים שברצונך לחסום בכתובת ההגדרות.
-
-### הגדרות
-
-בקובץ ההגדרות, ניתן להזין את רשימת האתרים שתרצה לחסום. ישנם גם אפשרויות נוספות להתאמה אישית, כמו ניהול תוקף החסימה והוספת חריגות.
-
-```javascript
-// קובץ ההגדרות
-const blockedSites = [
-  "https://www.example.com",
-  "https://www.unwanted-site.com",
-  // הוסף כתובות URL נוספות כרצונך
-];
-
-const options = {
-  blockMethod: "redirect", // או 'block' לחסימה מלאה
-  redirectURL: "https://blocked-page.com",
-  exceptions: ["https://allowed-site.com"], // אם יש חריגות
-  blockDuration: 24 * 60 * 60 * 1000, // זמן חסימה במילי-שניות
-};
-
-// הוסף את קובץ ההגדרות לקובץ הסקריפט
